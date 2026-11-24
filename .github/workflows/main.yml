@@ -22,10 +22,13 @@ jobs:
       - name: Extract project
         run: unzip -q LAYDZR-Plus-0.5.1-cloud-build.zip -d project
 
+      - name: Fix Loom version
+        run: sed -i "s/version '1.17'/version '1.17.21'/" project/LAYDZR-Plus/build.gradle
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '9.5.1'
+          gradle-version: '9.6.0'
 
       - name: Build mod
         working-directory: project/LAYDZR-Plus
