@@ -1,0 +1,40 @@
+
+name: Build LAYDZR Plus
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Extract project
+        run: |
+          unzip -q LAYDZR-Plus-0.5.1-cloud-build.zip -d project
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.5.1'
+
+      - name: Build mod
+        working-directory: project/LAYDZR-Plus
+        run: gradle build
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: LAYDZR-Plus-JAR
+          path: project/LAYDZR-Plus/build/libs/*.jar
